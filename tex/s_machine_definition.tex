@@ -1,0 +1,502 @@
+In this section we introduce a nondeterministic Turing machine model called the sweep machine of S-machine.
+The S-machine performs its computations during successive sweeps of the tape.
+The $i$th sweep, $i > 1$ consists of $i$ left moves followed by $(i+1)$ right moves.
+The leftmost symbol on the tape is a special end marker symbol, which also signals the reversal of a sweep.
+
+The S-machine operates with sets of tape symbols and sets of states.
+At any step of computation, the machine state would consist of a set of states and scanned cell
+would contain a set of tape symbols.
+The set of next states of the machine and the set of tape symbols to be written in the scanned
+cell by the use of a choice function.
+This choice function decides how the current states of the machine are to be
+paired with the symbols in the scanned cell.
+There are finitely many possible choice function values, each choice function is also a finite function.
+A computation of the S-machine consisting of $k$ sweeps is completely specified by a choice
+function sequence of $k^2 + 2k$.
+The S-machine is an acceptor model.
+An input is accepted by this machine if and only if there exists a choice function sequence that
+results in the machine entering an accepting state at the end of $k$ sweeps, for some
+$k$.
+If the input is not accepted by the machine, then the sequence of sweeps could
+be continued indefinitely, with all possible choice function sequences, without $M$ 
+ever entering an accepting state.
+Formal definition of $M$ follows.
+
+An \emph{S-machine} $M$ is a sixtuple 
+$M = \langle Q, \Sigma, \Gamma, \delta, \{q_0\}, H \rangle$.
+where $Q$ is a finite set of \emph{states}, and 
+$Q = Q^L \bigcup Q^R \bigcup P^R \bigcup \{q_0\}$.
+$Q^L$ is a set of \emph{left moving states}, $Q^R, P^R$ are 
+sets of \emph{right moving} states and $\{q_0\}$ a designated 
+set of \emph{start states}.
+All of these sets of states are mutually disjoint.
+
+
+$\Sigma$ is a finite set of input symbols, excluding the symbols $\cancelb$, $\cancelc$, $z$.
+$\Gamma$ is a finite set of \emph{tape symbols}.
+Each element of $\Gamma$ is an ordered pair
+$<x,y>$ of symbols:
+\begin{equation*}
+    \Gamma = \left\{ <x,y> | x \in \Sigma \bigcup \{\cancelb\},
+    y \in \{\cancelb, z\}\right\} \bigcup \left\{<\cancelc, \cancelc>\right\}
+\end{equation*}
+
+$H \subseteq Q$ is a set of \emph{accepting states}.
+Properties of $H$ will be discussed later.
+The transition function $\delta$ is defined by the instruction formats listed below.
+The superscripts $L$ and $R$ are used to denote membership in $Q^L$ and $Q^R \bigcup P^R$.
+$L$ denotes a left move and $R$ is a right move.
+\begin{enumerate}[label=(\roman*)]
+    \item \label{itm:start} For each $q_0 \in \{q_0\}, <x,z> \in \Gamma$ there exists
+    $<x_1,z>,\ldots,<x_k,z> \in \Gamma$ and $q_{i_1}^L, \ldots, q_{i_k}^L \in Q_L$ 
+    such that
+    $(q_0, <x,z>) \mapsto \left\{(q_{i_1}^{L}, <x_1,z>), \ldots, (q_{i_k}^L, <x_k,z>)\right\}$
+    is in $\delta$.
+    \item \label{itm:sweepleft} For each $q^L \in Q^L, <x,\cancelb> \in \Gamma,$ there exists
+    $<x_1,\cancelb>,\dots,<x_k,\cancelb> \in \Gamma$ and
+    $q_{i_1}^L,\dots,q_{i_k}^L \in Q^L$ such that
+    $(q^L, <x,\cancelb>) \mapsto \left\{(q_{i_1}^L,<x_1,\cancelb>),\dots,(q_{i_k}^L, <x_l,\cancelb>)\right\}$ is in $\delta$.
+    \item \label{itm:leftreverse} For each $q^L \in Q^L$, there exists $q^R \in Q^R$ such that
+    $(q^L, <\cancelc,\cancelc>) \mapsto (q^R,<\cancelc,\cancelc>)$  is in $\delta$.
+    \item \label{itm:sweepright} For each $q^R \in Q^R, <x,\cancelb> \in \Gamma$, there exists
+    $q_{i_1}^R,\ldots,q_{i_k}^R \in Q^R,
+    <x_1,\cancelb>,\ldots,<x_k,\cancelb> \in \Gamma$ such that
+    $(q^R,<x,\cancelb>) \mapsto \left\{(q_{i_1}^R, <x_1,\cancelb>)\ldots
+    (q_{i_k}^R, <x_k,\cancelb>)\right\}$ is in $\delta$.
+    \item \label{itm:extend} For each $q^R \in Q^R, <x,z> \in \Gamma$, there exists
+    $p_{i_1}^R,\ldots,p_{i_k}^R \in P^R$ and 
+    $<x_1\cancelb>,\ldots,<x_k,\cancelb> \in \Gamma$ such that
+    $(q^R, <x,z>) \mapsto \left\{p_{i_1}^R,<x_1,\cancelb>),\ldots,(p_{i_k}^R, <x_k,\cancelb>)\right\}$ is in $\delta$.
+    \item \label{itm:turnaround} For each $p^R \in P^R$ and $<x,\cancelb> \in \Gamma$, there exists
+    $q_{i_1}^L,\ldots,q_{i_k}^L \in Q^L$ and 
+    $<x_1,z>,\ldots,<x_k,z> \in \Gamma$ such that
+    $(p_i^R,<x,\cancelb>) \longrightarrow \left\{(q_{i_1}^L,<x_1,z>),\ldots,(q_{i_k}^L,<x_k,z>)\right\} $
+    is in $\delta$.
+\end{enumerate}
+
+
+We shall consider $\delta$ to be the smallest set of instructions closed under rules~\ref{itm:start}
+to~\ref{itm:turnaround} above.
+We shall assume that once the machine $M$ is in a halting state, all subsequent
+states it enters into are halting states.
+The symbol $\cancelc$ is used as a left end marker.
+The symbol $z$ which only appears as the second component of a tape symbol is called a sweep marker.
+It marks the cell at which the next sweep will begin.
+The symbol $\cancelb$ plays a special role.
+We assume that $M$ does not enter a halt state on scanning a $<\cancelb,\cancelb>$ or $<\cancelb,z>$ tape symbol.
+The machine $M$ performs all of its computations in terms of sets.
+At any stage of computation, each cell of the tape of $M$ contains a (finite) set of tape symbols.
+The state of the machine $M$ is a subset of left moving or right moving states.
+Each step of computation of $M$ is assumed to consist of the following sequence of operations:
+\begin{enumerate}[label=\alph*)]
+    \item \label{itm:scan} scan the symbols in the cell
+    \item \label{itm:write} write new symbols
+    \item \label{itm:state} change states
+    \item \label{itm:move} move one cell to the left or right.
+\end{enumerate}
+According to the description above, the direction of move in~\ref{itm:move} is known.
+
+
+\begin{aside}
+There is a lot to unpack here, and the original paper is pretty terse.
+So let's start by looking at the various pieces of the formal definition.
+
+First, the structure of each cell in the tape consists of a set of tape symbols.
+I.e., the contents of cell $c(i) \in \Gamma^*$, the power set of 
+tape symbols.
+We will see that only a restricted set of these tape symbols is
+permissible in a moment.
+
+The state of the S-machine will be some $q \in Q$.
+This state can be one of four special types of state:
+\begin{itemize}
+\item $q \in Q^L$ : this is a left moving state, meaning that when the S-machine
+advances, it will move left.
+\item $q \in {q_0}$ : these are start states.
+The S-machine will start in one of these states.
+Per~\ref{itm:start}, the machine will start moving left, provided that the
+marker for the start state is blank.
+\item $q \in Q^R$ : this is a right moving state, meaning that when the S-machine
+advances, it will move right.
+\item $p \in P^R$ : this is also a set of right moving states, but they have some
+additional properties.
+From~\ref{itm:extend}, it follows that if the S-machine
+is in the state $p \in P^R$, and it reads a cell consisting of an input symbol $x$,
+and a blank marker $\cancelb$, then it will write the $z$ symbol in the marker position,
+and transition to a left moving state.
+\end{itemize}
+
+
+Now, the set of properties laid out above suggest that not all tape symbol sets
+are actually permissible.
+In particular, the state of the marker part of the
+tape symbol must be synchronized.
+Let's revisit the rules in a bit more detail.
+
+\begin{enumerate}[label=(\roman*)]
+    \item If the S-machine is in an initial state $q_0$, the tape symbol active
+    has some symbol $x$ and a blank marker $z$, then the machine will leave
+    the blank marker alone, and enter a set of left moving state.
+
+\[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q_0$};
+   \draw[-latex] (F) -- (A);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.west)!0.5!(B.east)$) -- ++(-7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+    \item If the S-machine is in a left moving state, and the marker is $\cancelb$,
+    then if will remain in a left moving set of states.
+    In other words, if the cell is marked with $\cancelb$, the S-machine is guaranteed to move left, and
+    leave the marker as $\cancelb$.  
+
+\[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q_L$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.west)!0.5!(B.east)$) -- ++(-7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.west)!0.5!(B.east)$) -- ++(-7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+
+    \item If the S-machine is in a left moving state, and it encounters $<\cancelc, \cancelc>$,
+    it will enter a right moving state, and leave the $\cancelc$ marker in place.
+
+\[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{\cancelc\\\cancelc}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^L$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.west)!0.5!(B.east)$) -- ++(-7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{\cancelc\\\cancelc}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+
+    \item If the S-machine is in a right moving state, and the marker is $\cancelb$, 
+    it will remain in a right moving set of states.
+
+\[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^R,\ldots,q_k^R}$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+
+    \item If the S-machine is in a right moving state, and the marker is $z$ (blank), then
+    it will enter a state in $P^R$ and mark the cell as $\cancelb$.
+
+\[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\z}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {${p_1^R,\ldots,p_k^R}$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+
+    \item If the s-machine is in state $p^R \ in P^R$, and the cell is marked with $\cancelb$,
+    then it will mark the cell as $z$ (blank) and enter a left moving state.
+
+ \[
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {$p^R$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.east)!0.5!(D.east)$) -- ++(7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\quad \longrightarrow \quad
+\begin{aligned}
+\begin{tikzpicture}[every node/.style={block},
+        block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+   \node (A) {$\,\substack{x\\z}\,$};
+   \node (B) [left=of A] {$\ldots$};
+   \node (D) [right=of A] {$\ldots$};
+   \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
+   \draw[-latex] (F) -- (A);
+   \draw[-latex,red] ($(F.west)!0.5!(B.east)$) -- ++(-7mm,0);
+   \draw (B.north west) -- ++(-1cm,0) (B.south west) -- ++ (-1cm,0) 
+                 (D.north east) -- ++(1cm,0) (D.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{aligned}
+\]
+
+\end{enumerate}
+
+While stated above, it is important to realize that no matter how the machine operates,
+all the set of states are synchronized with respect to their motion and the marker state of the cell.
+So let us define first an augmented set of tape symbols that includes $\cancelb$:
+\begin{equation*}
+    \Sigma^+ = \Sigma \bigcup {\cancelb}
+\end{equation*}
+and let us also define a set of marker symbols 
+\begin{equation*}
+    Y = \{\cancelb, z\}
+\end{equation*}
+
+So it is more accurate to describe the contents of the tape cell as
+\begin{equation*}
+    \Gamma^* = \left\{
+    \{<x_1,y>,\ldots,<x_k,y>\} | <x_i, y> \in \Sigma^+ \times Y \bigcup <\cancelc, \cancelc>
+    \right\}
+\end{equation*}
+
+In words, this means each cell contains a 2-tuple, consisting of a set ${x_i}$ and a marker $y$, 
+where
+\begin{itemize}
+    \item The set $x_i$ comes from either the input symbols or $\cancelb$.
+    \item The marker $y$ is either $\cancelb$ or $z$.
+    \item A special case symbol $<\cancelc, \cancelc>$, can appear, as can
+    $<{\cancelc \ldots \cancelc}, \cancelc>$.
+\end{itemize}
+
+No other combination can appear.
+It may be helpful to think of $\cancelb$ as a \verb|NULL| symbol.
+\end{aside}
+
+
+At any step $i$ of computation, $sc(i)$ will denote the index of the cell
+scanned in~\ref{itm:scan} and $Ac(i)$ the set of
+states at the end of~\ref{itm:state} above.
+It follows that at step $i, i\geq 1$, the machine scans the
+symbols of the cell $sc(i)$ in states $Ac(i-1)$.
+In computing $Ac(i)$ from the symbols in cell
+$sc(i)$ and the states $Ac(i-1)$, we use a choice function $\alpha$.
+A particular choice function
+$\alpha$ maps each state of $M$ to a subset of $\Gamma$.
+Before defining this computation, we introduce
+the notion of a product.
+
+Let $A$ be the set of states and $B$ a set of tape symbols of $M$.
+We introduce the following
+operator $*$ called \emph{product}.
+\begin{align*}
+    A*B &= \left\{q|\exists x \in \Gamma, q_1 \in A, a_1 \in B \suchthat (q,x) \in \delta(q_1, a_1)\right\}\\
+    B*A &= \left\{x|\exists q \in Q, q_1 \in A, a_1 \in B \suchthat (q_1,x) \in
+    \delta(q_1, a_1)\right\}.
+\end{align*}
+\begin{error}
+Typo?
+Should be
+\begin{align*}
+    A*B &= \left\{q|\exists x \in \Gamma, q_1 \in A, a_1 \in B \suchthat (q,x) \in \delta(q_1, a_1)\right\}\\
+    B*A &= \left\{x|\exists q \in Q, q_1 \in A, a_1 \in B \suchthat (q,x) \in
+    \delta(q_1, a_1)\right\}.
+\end{align*}
+\end{error}
+This $A*B$ is the set of all possible next states of $M$ and $B*A$ the set of all possible symbols
+written in the scanned cell, when the machine state is a member of $A$ and the scanned cell a member
+of $B$.
+
+Henceforth, we shall refer to a set of states of $M$ as a \emph{stateset} and a set of tape symbols
+of $M$ as a \emph{symbolset} respectively.
+Statesets and symbolsets are closed under union.
+Thus if $q_1, q_2$ are statesets, so is $q_1 + q_2$ and if $a_1, a_2$ are symbol subsets so is $a_1+a_2$.
+The following lemma shows that distributive properties hold.
+We use lower case symbols for statesets
+and symbolsets.
+
+
+\begin{lemma}\label{lem:distributive}
+For any statesets $q, q_1, q_2$ and symbolsets $a, a_1, a_2$
+\begin{align*}
+    q*(a_1+a_2) &= q*a_1+q*a_2 \\
+    (q_1 + q_2) * a &= q_1 * a + q_2 * a \\
+    (a_1 + a_2) * q &= a_1 * q + a_2 * q \\
+    a * (q_1 + q_2) &= a*q_1 + a*q_2
+\end{align*}
+\end{lemma}
+
+\begin{proof}
+    From the definition above,
+    \begin{align*}
+        p \in q * (a_1 + a_2) &\iff \exists p' \in q, x \in \Gamma, b \in a_1 + a_2 \suchthat (p,x) \in \delta(p', b) \\
+        &\iff \exists p' \in q, x \in \Gamma, b \in a_1 \suchthat
+        (p,x) \in \delta(p', b) \lor
+        \exists p' \in q, x \in \Gamma, b \in a_2 \suchthat
+        (p,x) \in \delta(p',b)\\
+        &\iff p \in q * a_1 \lor p \in q * a_2 \\
+        &\iff p \in q * a_1 + q * a_2
+    \end{align*}
+\end{proof}
+
+\begin{aside}
+    The original proof of Lemma~\ref{lem:distributive} is somewhat terse.
+    However, the concept is fairly simple.
+    From the definition of the product operator $*$, we have that
+    $q * (a_1 + a_2)$ is the set of all states reachable from $q$, with
+    a tape cell containing either $a_1$ or $a_2$.
+    If $p$ is reachable from $q$ given a symbol from $a_1$ or $a_2$, then
+    there must be an initial state $p' \in q$ such that we transition to
+    $p$ with the symbol $b$ drawn from $a_1 + a_2$.
+    We can then consider if the symbol $b$ comes from $a_1$ (in which case)
+    $p \in q * a_1$, or if the symbol $b$ comes from $a_2$, in which case
+    $p \in q * a_2$.
+    If the symbol is common to both $a_1$ and $a_2$, the result is unaffected.
+    As a result, we can claim that $p \in q*a_1 + q*a_2$.
+\end{aside}
+
+A stateset $q$ is \emph{left moving} if $q \subseteq Q^L$, \emph{right moving} if
+$q \subseteq Q^R$ and halting if $q \cap H \neq \emptyset$.
+\begin{error}
+    Should this not be $q \subseteq Q^R \cup P^R$?
+    The subset $P^R$ contains right moving states as well.
+\end{error}
+A symbolset $a$ is \emph{marked} if every tape symbol $x$ of $a$ contains the sweep marker.
+The definitions of the instructions of $M$ show that a stateset of $M$ during any
+computation is a left moving, right moving or a halting stateset.
+The symbolset is either marked or unmarked.
+
+Consider now the set of halting statesets $Q_H$.
+If $M$ has been constructed to accept a recursive set $L$, then
+for every input $w$ (encoded as defined subsequently), $M$ must halt
+in an accepting or rejecting stateset.
+Accordingly, we assume that $H = H_A \cup H_R$ where
+$H_A$ is the set of accepting states and $H_R$ the set of
+rejecting states.
+$q \in Q_H$ is \emph{accepting} if $q \cap H_A \neq \emptyset$
+and \emph{rejecting} if $q \cap H_A = \emptyset$.
+
+We shall assume that there exist symbols $a_1, a_2 \in \Gamma$ such that
+\[
+    q \in H_A \implies \forall x \in \Gamma, \exists q' \in H_A \suchthat
+    (q', a_1) \in \delta(q,x)
+\]
+and
+\[
+    q \in H_R \implies \forall x \in \Gamma, \exists q' \in H_R \suchthat
+    (q', a_2) \in \delta(q,x).
+\]
+$a_1$ is therefore an accepting tapesymbol, and $a_2$ a rejecting
+tapesymbol.  $H_A$ and $H_R$ would contain left moving and right moving states.
+
+\begin{aside}
+    The machine $M$ will write the symbol $a_1$ to the tape when it accepts the set $L$, and
+    the machine $M$ will write the symbol $a_2$ to the tape when it rejects the set $L$.
+\end{aside}
+
+Let
+\begin{align*}
+    \Sigma_{A} &= \{a \subseteq \Gamma | a_1 \in a\} \\
+    \Sigma_{R} &= \{a \subseteq \Gamma | a_2 \in a\} \\
+    Q_A &= \{q \subseteq Q | q \cap H_A \neq \emptyset\} \\
+    Q_R &= \{q \subseteq Q | q \cap H \neq \emptyset \land q \cap H \neq \emptyset \} \\
+    \{Q\} &= \{q | q \subseteq Q^L \lor q \subseteq Q^R \}.
+\end{align*}

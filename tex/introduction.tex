@@ -1,0 +1,84 @@
+The problems of specification, development and verification of programs have constituted
+a very active area of research over the past decade.
+The central problem in this area can be stated in the following way.
+
+Suppose we are given the formal specification of a program, in the form of a mapping 
+of input data objects to output data objects.
+How should a program be constructed so that its total correctness with respect to the
+given specifications can be systematically
+demonstrated?
+It became clear very early that the process of verification of the
+program and its development were closely interrelated.
+A very important step towards a
+solution of this problem was made possible by the strategies of top down
+program development and the notion of structured programming. \cite{}
+Suppose now a structured program is given as a candidate, and the problem is to demonstrate
+the total correctness of this program relative to given specifications.
+Using the method of inductive assertions \cite{} requires that an assertion be provided at each
+cutpoint of a loop.
+These loop assertions are induction hypotheses, required for proof by induction.
+If we wish to automate the proof mechanism, we should be able to generate these loop
+assertions from the given program and its specifications.
+
+Investigations into this problem have shown \cite{} that it is possible to obtain this
+information, provided the input-output behavior of the program has certain properties.
+
+Consider the domain of (input) data objects that are transformed into (output) data objects.
+We impose a criterion of unique decomposability on the data objects.
+Thus we assume that each (non-basic) data object is uniquely decomposable into a linear sequence of basic data objects.
+We regard the program behavior as \emph{uniform}, if the output data object can be systematically
+obtained from the composition of the input data object and the program behavior on the basic objects.
+This property in particular implies that the program behavior on a basic object be independent
+of the context in which it may appear within an arbitrary data object.
+A number of examples of programs uniform in this sense have been studied in \cite{}, \cite{}.
+
+The question now arises as to whether a uniform program can be effectively obtained
+from an arbitrary recursive decision procedure.
+In general, we can expect such a uniform decision algorithm to be more efficient, provided the decomposition
+of the input data object can be achieved easily.
+
+In this paper we answer the above question affirmatively.
+We begin with a modified Turing machine acceptor model and from this obtain an equivalent uniform program.
+The resulting decision algorithm is highly efficient.
+
+A fundamental relation between time and space complexity is revealed by this approach.
+We have shown that every language accepted by a deterministic Turing machine
+within space bound $S(n)$ can be accepted by a deterministic algorithm
+within \bigO{S(n)^2} steps.
+This solves a problem of Karp \cite{}.
+
+The notion of complexity of computations was introduced by Rabin \cite{}.
+A comprehensive review of developments since then can be found in \cite{}.
+
+The relation between time and space complexities have been studied extensively.
+Hopcroft et al. \cite{} showed that every deterministic multitape Turing machine of time complexity
+$T(n)$ can be simulated by a deterministic Turing machine of space complexity $T(n)/\log T(n)$.
+Similar time space trade off results have been obtained for several other classes
+of machines. \cite{}
+
+The contents of this paper are organized into five sections.
+In section~\ref{sec:s_machine_definition} we introduce the S-machine model.
+We then obtain a deterministic simulator for this machine in the form of a
+while-do loop, and show that it accepts the same language as the S-machine.
+The memory space used by this simulator is no more than a constant times that used by the S-machine.
+
+In section~\ref{sec:two} we introduce an equivalence relation between sets of states and a
+corresponding relation between sets of symbols.
+This equivalence relation is then extended to crossing functions.
+
+In section~\ref{sec:three} we define a context graph.
+The node labels of the context graph contain the equivalence class of the crossing
+function of a scanned segment of the tape at the end of a certain sequence of sweeps.
+An inductive procedure for computing the context graph is described.
+An upper bound on the number of steps required to compute the context graph at a
+stage of computation of the S-machine is then derived.
+
+Section~\ref{sec:four} shows that the context graph has the required property with
+respect to the scanned segment of the tape and sequences of sweeps over this segment.
+
+In section~\ref{sec:five} we define a configuration of the while-do simulator using the context graph.
+We define a weak and strong equivalence relation on the configurations.
+The input output behavior of the while-do loop is shown to be uniform over a linear data domain.
+We then obtain an algorithm to decide whether an input of length $n$ will be accepted by the S-machine.
+This deterministic algorithm uses no more than \bigO{S(n)^2} steps where $S(n)$ is the space bound of the S-machine.
+

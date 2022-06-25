@@ -1,0 +1,61 @@
+
+
+\iffalse
+\begin{aside}
+    For the engineers (like me) reading this, it can help to think in terms of a concrete
+    machine, i.e., a simple computer.  In this case.  Let us assume that we have a
+    computer with a very simple Harvard architecture:
+    \begin{itemize}
+        \item It has a single register/accumulator $a \in \mathbb{Z}^W$.
+        \item It also has a single data register $x \in \mathbb{Z}^W$.
+        \item It has a left, right, halt flag $f \in \{L, R, H\}$
+        \item It has a set of opcodes $\{o_i\}$.
+        \item It has a current instruction register $o$.
+        \item It has an instruction pointer $n$.
+        \item It has a data pointer $m$.
+        \item It has a data memory space $T_k$ that is infinite and starts at index $k = 0$. Each
+        $T_k \ in \mathbb{Z}^W$.
+        \item It has a program memory space $D_k$ that contains opcodes $D_k \in \{o_i\}$.
+    \end{itemize}
+
+    It is easy to reason about the behavior of this simple computer.  The architecture is
+    thus:
+    \begin{itemize}
+        \item The computer is initialized with $a = 0, x = 0, n = 0, m = 0$, and some contents of the data memory $T_k$,
+        and the program memory $D_k$.
+        \item On each "clock cycle", the computer performs the following sequence of events:
+        \begin{enumerate}
+            \item Fetch the contents of the program memory at the current instruction pointer into $o$.
+            \item Fetch the contents of the data memory at the current data pointer into $x$.
+            \item Based on the instruction $o$, use the value of the accumulation register, the opcode, and the data element, to compute updated values for these:
+
+            update $a, n, m, x$.
+            \item If the opcode is \verb|HALT|, the computer stops.
+            \item Otherwise, it continues with the first step.
+        \end{enumerate}
+    \end{itemize}
+
+    This computer (while limited) contains the following equivalencies when describing
+    the components of the \emph{S-machine}:
+    \begin{itemize}
+        \item The set $Q$ is the set of states of the machine.  In this case, the state of the computer
+        would technically include the contents of the memory (or in Turing machine language, the contents
+        of the tape).  But in practice, we think instead of the state of the processor itself.  For this
+        processor, the state is simply $<a, n, m>$
+    \end{itemize}
+\end{aside}
+
+\begin{tikzpicture}[every node/.style={block},
+    block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+    \node (A) {$\substack{x\\\cancelb}$};
+    \node (B) [left=of A] {$\ldots$};
+    \node (C) [left=of B] {$B$};
+    \node (D) [right=of A] {$\ldots$};
+    \node (E) [right=of D] {$\$ $};
+    \node (F) [above = 0.75cm of A,draw=red,thick] {$q_0$};
+    \draw[-latex] (F) -- (A);
+    \draw[-latex,blue] ($(F.east)!0.5!(A.east)$) -- ++(7mm,0);
+    \draw (C.north west) -- ++(-1cm,0) (C.south west) -- ++ (-1cm,0)
+    (E.north east) -- ++(1cm,0) (E.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\fi

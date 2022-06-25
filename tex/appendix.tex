@@ -1,0 +1,49 @@
+\subsection{Proofs for Lemma~\ref{lem:distributive}}\label{ssec:distributive_proofs}
+
+The proofs of the various parts of Lemma~\ref{lem:distributive} were left out of the original
+paper as they are straightforward.
+In the interest of completion, we include those proofs in this appendix subsection.
+First, we prove that for any statesets $q, q_1, q_2$ and symbolsets $a, a_1, a_2$
+\begin{align*}
+    (q_1 + q_2) * a &= q_1 * a + q_2 * a \\
+\end{align*}
+
+\begin{proof}
+    \begin{align*}
+        p \in (q_1 + q_2) * a & \iff \exists p' \in (q_1+q_2), x \in \Gamma \suchthat (p,x) \in \delta(p', a) \\
+        & \iff p' \in q_1, x \in \Gamma \suchthat (p,x) \in \delta(p', a) \lor
+               p' \in q_2, x \in \Gamma \suchthat (p,x) \in \delta(p', a) \\
+        & \iff p \in q_1 * a \lor p \in q_2 * a \\
+        & \iff p \in q_1 * a + q_2 * a
+    \end{align*}
+\end{proof}
+
+Next, we prove
+\begin{align*}
+    (a_1 + a_2) * q &= a_1 * q + a_2 * q.
+\end{align*}
+
+\begin{proof}
+    \begin{align*}
+        b \in (a_1 + a_2) * q & \iff \exists p' \in Q, p \in q, x \in (a_1 + a_2) \suchthat (p',b) \in \delta(p,x) \\
+        & \iff \exists p' \in Q, p \in Q, x \in a_1 \suchthat (p', b) \in \delta(p,x) \lor
+         \exists p' \in Q, p \in Q, x \in a_2 \suchthat (p', b) \in \delta(p,x) \\
+        & \iff b \in a_1 * q \lor b \in a_2 * q \\
+        & \iff b \in a_1 * q + a_2 * q
+    \end{align*}
+\end{proof}
+
+Finally, we prove
+\begin{align*}
+    a * (q_1 + q_2) &= a*q_1 + a*q_2
+\end{align*}
+
+\begin{proof}
+    \begin{align*}
+        b \in a * (q_1 + q_2) & \iff \exists p' \in Q, p \in (q_1 + q_2), x \in a \suchthat (p', b) \in \delta(p, x) \\
+        & \iff \exists p' \in Q, p \in q_1, x \in q \suchthat (p', b) \in \delta(p, x) \lor
+        \exists p' \in Q, p \in q_2, x \in q \suchthat (p', b) \in \delta(p, x) \\
+        & \iff b \in a * q_1 \lor b \in a * q_2 \\
+        & \iff b \in a * q_1 + a * q_2
+    \end{align*}
+\end{proof}

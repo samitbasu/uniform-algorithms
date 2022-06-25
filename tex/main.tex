@@ -1,0 +1,77 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Welcome to Overleaf --- just edit your LaTeX on the left,
+% and we'll compile it for you on the right. If you open the
+% 'Share' menu, you can invite other users to edit at the same
+% time. See www.overleaf.com/learn for more info. Enjoy!
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage[doublespacing]{setspace}
+\usepackage{cancel}
+\usepackage{mdframed}
+\usepackage{enumitem}
+\usepackage[margin=1in]{geometry}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usetikzlibrary{positioning,calc}
+\title{On A Class of Uniform Algorithms}
+\author{Sanat K. Basu}
+\date{Jan 1, 1985}
+
+
+\begin{document}
+\newcommand\bigO[1]{$\mathcal{O}(#1)$}
+\newcommand\cancelb{\cancel{b}}
+\newcommand\cancelc{\cancel{c}}
+\newcommand{\suchthat}{\ni}
+\newenvironment{aside}
+{\begin{mdframed}[leftline=false, rightline=false, leftmargin=2em, rightmargin=2em,
+    innerleftmargin=0pt, innerrightmargin=0pt, linewidth=0.75pt,skipabove=7pt, skipbelow=7pt]\small}
+{\end{mdframed}}
+
+\newenvironment{error}
+{\begin{mdframed}[backgroundcolor=red!10, leftline=false, rightline=false, leftmargin=2em, rightmargin=2em,
+    innerleftmargin=0pt, innerrightmargin=0pt, linewidth=0.75pt,skipabove=7pt, skipbelow=7pt]\small}
+{\end{mdframed}}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}[theorem]{Lemma}
+
+\maketitle
+\begin{abstract}
+A nondeterministic Turing machine model called S-machine is introduced.
+This machine performs its computations during successive sweeps of the tape, using sets of states and sets of symbols.
+A deterministic simulator of this machine in the form of a while-do loop is constructed.
+A relation of equivalence between sets of states and a corresponding relation between sets of symbols is introduced.
+These relations are then extended to define equivalence classes of crossing functions.
+Information about the equivalence class of the crossing function of the scanned segment of the tape is contained
+in a context graph.
+A procedure for computing this graph is described.
+It is shown that successive context graphs can be computed in a constant number of 
+steps.
+Using the context graph it is shown that the while-do simulator of the S-machine
+is uniform over a linear data domain.
+We then obtain a deterministic algorithm to
+decide whether an input of size $n$ will be accepted by the S-machine.
+This algorithm uses no more than \bigO{S(n)^2} steps where $S(n)$ is the spacebound
+of the S-machine.
+Corresponding results in terms of the standard Turing machine model are then derived.
+\end{abstract}
+
+\section{Introduction}\label{sec:introduction}
+\input{introduction}
+
+\section{A nondeterministic sweep machine (S-machine)}\label{sec:s_machine_definition}
+\input{s_machine_definition}
+
+\section{Equivalence of statesets and symbol sets}\label{sec:two}
+\section{The left context graph}\label{sec:three}
+\section{Properties of $G_i$}\label{sec:four}
+\section{Uniformity of $\bar{P}_2$}\label{sec:five}
+\section{Appendix}\label{sec:appendix}
+\input{appendix}
+\end{document}
