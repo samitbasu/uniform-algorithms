@@ -142,7 +142,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q_0$};
@@ -155,7 +155,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
@@ -176,7 +176,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q_L$};
@@ -190,7 +190,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
@@ -210,7 +210,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{\cancelc\\\cancelc}\,$};
+   \node (A) {\Mcell{\cancelc}{\cancelc}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^L$};
@@ -224,7 +224,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{\cancelc\\\cancelc}\,$};
+   \node (A) {\Mcell{\cancelc}{\cancelc}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
@@ -244,7 +244,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
@@ -258,7 +258,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^R,\ldots,q_k^R}$};
@@ -278,7 +278,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\z}\,$};
+   \node (A) {\Mcell{x}{z}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$q^R$};
@@ -292,7 +292,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {${p_1^R,\ldots,p_k^R}$};
@@ -312,7 +312,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\\cancelb}\,$};
+   \node (A) {\Mcell{x}{\cancelb}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {$p^R$};
@@ -326,7 +326,7 @@ Let's revisit the rules in a bit more detail.
 \begin{aligned}
 \begin{tikzpicture}[every node/.style={block},
         block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-   \node (A) {$\,\substack{x\\z}\,$};
+   \node (A) {\Mcell{x}{z}};
    \node (B) [left=of A] {$\ldots$};
    \node (D) [right=of A] {$\ldots$};
    \node (F) [above = 0.75cm of A,draw=blue,thick] {${q_1^L,\ldots,q_k^L}$};
@@ -497,6 +497,147 @@ Let
     \Sigma_{A} &= \{a \subseteq \Gamma | a_1 \in a\} \\
     \Sigma_{R} &= \{a \subseteq \Gamma | a_2 \in a\} \\
     Q_A &= \{q \subseteq Q | q \cap H_A \neq \emptyset\} \\
-    Q_R &= \{q \subseteq Q | q \cap H \neq \emptyset \land q \cap H \neq \emptyset \} \\
+    Q_R &= \{q \subseteq Q | q \cap H \neq \emptyset \land q \cap H_A \neq \emptyset \} \\
     \{Q\} &= \{q | q \subseteq Q^L \lor q \subseteq Q^R \}.
 \end{align*}
+
+\begin{error}
+    Not sure why we don't need to consider $P^R$?
+\end{error}
+
+Then we have $Q_H = Q_A \cup Q_R, Q_A \cap Q_R = \emptyset$.
+$\Sigma_A$ ($\Sigma_R$) is the set of accepting (rejecting) symbolsets,
+$Q_A$ ($Q_R$) the set of accepting (rejecting) halt statesets and
+${Q}$ the set of statesets of $M$.
+We extend the product to sets of statesets.
+Let $A, B$ be sets of
+statesets and symbolsets respectively then,
+\[
+    A*B = \{q*a | q \in Q, a \in B\}
+\]
+and
+\[
+    B*A = \{a*q | q \in A, a \in B\}.
+\]
+Then, $\{Q\} * \Sigma_A \subseteq Q_A$, $\Sigma_A * \{Q\} \subseteq \Sigma_A$,
+$\{Q\} * \Sigma_R \subseteq Q_R$ and $\Sigma_R * \{Q\} \subseteq \Sigma_R$.
+Each $Q_A$ and $Q_R$ can be partitioned into leftmoving and rightmoving
+parts, so that $Q_A = Q_A^L \cup Q_R^R$ and $Q_R = Q_R^L \cup Q_R^R$
+
+\begin{error}
+    I believe this is a typo.  Should be $Q_A = Q_A^L \cup Q_A^R$.
+\end{error}
+
+\begin{aside}
+    Consider the first statement: $\{Q\} * \Sigma_A \subseteq Q_A$.
+    In detail, this means that if we choose a stateset $q \in \{Q\}$,
+    and a symbolset $a \in \Sigma_A$, then we know that by definition
+    of $\Sigma_A$, that $a_1 \in a$ (i.e., at least one element of the
+    symbolset is the special symbol $a_1$).
+    From the definition of $a_1$, inclusion of this symbol in the
+    symbolset guarantees that $M$ will halt and accept $L$.
+    Similarly, if the symbolset under the tape head contains $a_1$,
+    then at least one element of the output symbolset will also
+    contain $a_1$.
+\end{aside}
+
+Suppose $w = a_1 a_2 \ldots a_n \in \Sigma^*$ be an imput string of length $n$.
+The initial tape configuration of $M$ is the string of symbolsegs:
+\[
+    \left\{<\cancelc, \cancelc>\right\},
+    \left\{<a_1,z>\right\},
+    \left\{<a_2,\cancelb>\right\},
+    \ldots
+    \left\{<a_n,\cancelb>\right\}.
+\]
+The leftmost symbolset is assumed to be in the cell with index 0.
+Cells with index $> n$ are assumed to contain $\{<\cancelb,\cancelb>\}$.
+The initial stateset is $\{q_0\}$, and the cell scanned is 1.
+
+
+\begin{aside}
+%        |{q_0}|
+%           |
+%           v
+%  | \c |  a_1  |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z   |   \b  |       |   \b  |  \b  |
+%    A      B       C       D       E       F     G
+%
+    This is a diagram of $M$ in its initial state.
+\begin{center}
+\begin{tikzpicture}[every node/.style={block},
+    block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+    \node (A) {\Mcell{\cancelc}{\cancelc}};
+    \node (A0) [below=of A, draw=none] {$0$};
+    \node (B) [right=of A] {\Mcell{a_1}{z}};
+    \node (B0) [below=of B, draw=none] {$1$};
+    \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+    \node (C0) [below=of C, draw=none] {$2$};
+    \node (D) [right=of C] {$\ldots$};
+    \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+    \node (E0) [below=of E, draw=none] {$n$};
+    \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+    \node (G) [right=of F] {$\ldots$};
+    \node (F) [above = 0.75cm of B,draw=blue,thick] {$q_0$};
+    \draw[-latex] (F) -- (B);
+    \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+    (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+\end{tikzpicture}
+\end{center}
+\end{aside}
+
+From rule~\ref{itm:start}\footnote{Original says "rule 1".}
+of $M$, the machine would rewrite the symbol set in cell $1$ and move left.
+Step 1 of the computation of $M$ begins with $M$ scanning $\cell{0} = sc(1)$ in
+stateset $Ac(0)$ where
+\[
+    Ac(0) = \{q_0\} * \{<a_1, z>\}
+\]
+and $\cellp{1}$ denotes the contents of $\cell{1}$ at the end of the initial step.
+From rules~\ref{itm:start} of $M$, $Ac(0) \subseteq Q^L$ and $sc(i) = 0$.
+The function $sc(i)$ defining the index of the scanned cell at step $i$ can
+be obtained from the description of $M$.
+In general
+\[
+    sc(1) = 0
+\]
+and for $i > 1$:
+\begin{align*}
+    sc(i+1) =
+    \begin{cases}
+        sc(i)+1 \,\mathrm{if}\,Ac(i) \subseteq Q^R \lor sc(i) = 0 \\
+        sc(i)-1 \,\mathrm{if}\,Ac(i) \subseteq Q^L \land sc(i) > 1 \lor Ac(i) \subseteq P^R.
+    \end{cases}
+\end{align*}
+If the scanned cell at step $i$ is to the right of cell $0$ and the machine moves
+left at the end of step $i$ then the index of the scanned cell at step $i+1$
+is one less than that at step $i$.
+A left move at the end of step $i$ happens
+if either $Ac(i) \subseteq Q^L$ or by rule~\ref{itm:turnaround} of $M$,
+$Ac(i) \subseteq P^R$.
+If $Ac(i) \subseteq Q^R$ or $sc(i) = 0$, the machine moves right at the end of the
+$i$th step, so that the index of the scanned cell at step $i+1$ is obtained by
+adding one to that at step $i$i.
+A \emph{choice function} $\alpha : Q \mapsto 2^\Gamma$ maps each state of $M$ to
+a subset of tape symbols.
+Since there are only finitely many states and tape symbols, there are only
+finitely many possible choice functions.
+
+For a given initial configuration, $(Ac(0), sc(1))$, a computation of length $n$
+of the S-machine $M$ is uniquely described by a sequence $\alpha_1,\alpha_2,\ldots,
+\alpha_n$ of choice functions.
+Symbolically,
+\[
+    (Ac(i), sc(i+1)) \, \xrightarrow[\alpha_{i+1}]{} \, (Ac(i+1), sc(i+2))
+\]
+for $0 \leq i < n$.
+
+We have defined $Ac(1), sc(2)$ above.
+Given $Ac(i), sc(i+1)$ and a choice function $\alpha_{i+1}$ we define
+below $Ac(i+1)$ and cell $(sc(i+1))$ after the completion of the $(i+1)$st step.  Since $sc(i+1)$ and $Ac(i+1)$ are not
+now known, $sc(i+2)$ can be computed.
+We shall use the notion $\cellp{sc(i+1)}$ to denote the contents of $\cell{sc(i+1)}$
+after the completion of the $(i+1)$st step.
+$\cell{sc(i+1)}$ denotes the contents of $\cell{sc(i+1)}$ at the beginning of the $(i+1)$st step.
+
+
