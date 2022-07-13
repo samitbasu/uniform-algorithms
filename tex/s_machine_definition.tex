@@ -564,26 +564,26 @@ The initial stateset is $\{q_0\}$, and the cell scanned is 1.
 %    A      B       C       D       E       F     G
 %
     This is a diagram of $M$ in its initial state.
-\begin{center}
-\begin{tikzpicture}[every node/.style={block},
-    block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
-    \node (A) {\Mcell{\cancelc}{\cancelc}};
-    \node (A0) [below=of A, draw=none] {$0$};
-    \node (B) [right=of A] {\Mcell{a_1}{z}};
-    \node (B0) [below=of B, draw=none] {$1$};
-    \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
-    \node (C0) [below=of C, draw=none] {$2$};
-    \node (D) [right=of C] {$\ldots$};
-    \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
-    \node (E0) [below=of E, draw=none] {$n$};
-    \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
-    \node (G) [right=of F] {$\ldots$};
-    \node (F) [above = 0.75cm of B,draw=blue,thick] {$q_0$};
-    \draw[-latex] (F) -- (B);
-    \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
-    (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
-\end{tikzpicture}
-\end{center}
+    \begin{center}
+        \begin{tikzpicture}[every node/.style={block},
+            block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+            \node (A) {\Mcell{\cancelc}{\cancelc}};
+            \node (A0) [below=of A, draw=none] {$0$};
+            \node (B) [right=of A] {\Mcell{a_1}{z}};
+            \node (B0) [below=of B, draw=none] {$1$};
+            \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+            \node (C0) [below=of C, draw=none] {$2$};
+            \node (D) [right=of C] {$\ldots$};
+            \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+            \node (E0) [below=of E, draw=none] {$n$};
+            \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+            \node (G) [right=of F] {$\ldots$};
+            \node (F) [above = 0.75cm of B,draw=blue,thick] {$q_0$};
+            \draw[-latex] (F) -- (B);
+            \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+            (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+        \end{tikzpicture}
+    \end{center}
 \end{aside}
 
 From rule~\ref{itm:start}\footnote{Original says "rule 1".}
@@ -605,8 +605,8 @@ and for $i > 1$:
 \begin{align*}
     sc(i+1) =
     \begin{cases}
-        sc(i)+1 \,\mathrm{if}\,Ac(i) \subseteq Q^R \lor sc(i) = 0 \\
-        sc(i)-1 \,\mathrm{if}\,Ac(i) \subseteq Q^L \land sc(i) > 1 \lor Ac(i) \subseteq P^R.
+        sc(i)+1 \,\mathrm{if}\, \begin{cases} Ac(i) \subseteq Q^R \\ sc(i) = 0 \end{cases} \\
+        sc(i)-1 \,\mathrm{if}\, \begin{cases} Ac(i) \subseteq Q^L \land sc(i) > 1 \\ Ac(i) \subseteq P^R \end{cases}.
     \end{cases}
 \end{align*}
 If the scanned cell at step $i$ is to the right of cell $0$ and the machine moves
@@ -634,10 +634,400 @@ for $0 \leq i < n$.
 
 We have defined $Ac(1), sc(2)$ above.
 Given $Ac(i), sc(i+1)$ and a choice function $\alpha_{i+1}$ we define
-below $Ac(i+1)$ and cell $(sc(i+1))$ after the completion of the $(i+1)$st step.  Since $sc(i+1)$ and $Ac(i+1)$ are not
-now known, $sc(i+2)$ can be computed.
+below $Ac(i+1)$ and cell $(sc(i+1))$ after the completion of the $(i+1)$st step.
+Since $sc(i+1)$ and $Ac(i+1)$ are now known, $sc(i+2)$ can be computed.
 We shall use the notion $\cellp{sc(i+1)}$ to denote the contents of $\cell{sc(i+1)}$
 after the completion of the $(i+1)$st step.
-$\cell{sc(i+1)}$ denotes the contents of $\cell{sc(i+1)}$ at the beginning of the $(i+1)$st step.
+$\cell{sc(i+1)}$ denotes the contents of $\cell{sc(i+1)}$ at the
+beginning of the $(i+1)$st step.
+
+The set of active states at step $(i+1), Ac(i+1)$ is defined as follows for $i>0$:
+\begin{itemize}
+    \item \label{itm:leftstate} $sc(i+1)=0$; then $\cell(sc(i+1)) = \{<\cancelc,\cancelc>\}$
+    and $Ac(i+1) = Ac(i) * \{<\cancelc, \cancelc>\}$
+    $\cellp{sc(i+1)} = \{<\cancelc,\cancelc\} * Ac(i) = \{<\cancelc, \cancelc>\}$ by rule~\ref{itm:leftreverse} of $M$.
+    \item \label{itm:notleftstate} $sc(i+1)>0$; for each $q \in Ac(i),$ let
+    \[
+        B_q = \alpha_{i+1}(q) \cup \cell{sc(i+1)}
+    \]
+    then,
+    \begin{align*}
+        A_c(i+1) &= \bigcup_{q \in Ac(i)} {q} * B_q \\
+        \cellp{sc(i+1)} &= \bigcup_{q \in Ac(i)} B_q * {q}
+    \end{align*}
+\end{itemize}
+Given the set of active states at step $i$, $Ac(i)$, and the symbols to be
+scanned at step $i+1$, $\cell{sc(i+1)}$, the choice function for the $i+1$st
+step $\alpha_{i+1}$ assigns a (possibly empty) subset $B_q$ of symbols ibn
+$\cell{sc(i+1)}$ to each state $q$ of $Ac(i)$.
+
+The new set of active states $Ac(i+1)$ is the set of all possible next states
+of $M$ resulting from the assignment above.
+i.e., $Ac(i+1)$ is the
+set of all states that appear in the right hand side of an instruction
+$\delta(q,x), q \in Ac(i), x \ in B_q$.
+The new set of symbols at $\cell{sc(i+1)}$ are all symbols that
+appear in the right hand side of an instruction
+$\delta(q,x), q \in Ac(i), x \in B_q$.
+Having computed $Ac(i+1),$ $sc(i+2)$ can be computed
+from $Ac(i+1)$ and $sc(i+1)$ thus completing the $(i+1)$st step of M.
+
+Consider now a sequence $\alpha = \alpha_1 \alpha_2 \ldots \alpha_n$
+of choice functions.
+$\alpha$ uniquely defines $n$ steps of $M$'s
+computation, since the initial step is defined without the use of
+any choice function.
+If however for some $i$, $1 \leq i \leq n$,
+$Ac(i) = \emptyset$, then for all $j \geq i$, $Ac(j) = \emptyset$.
+For, from the definition of product for any symbol set $a$,
+$\emptyset * a = \emptyset$.
+
+Let $\alpha$ be the sequence of choice functions that does not lead to a
+null computation.
+Consider now the location of the marked symbolset.
+From the initial configuration, we find that the symbol set at cell 1 is
+marked.
+Consider the first sweep consisting of the moves LRR.
+
+From rule~\ref{itm:start} of $M$ and the definition of $\cellp{1}$, all
+symbols in $\cellp{1}$ are marked, at the end of step 0.
+Further $Ac(0) \subseteq Q^L$ and $sc(1) = 0$.
+Since $\cell{sc(1)} = \{<\cancelc, \cancelc>\}$, by rule~\ref{itm:leftreverse}
+of $M$, $Ac(1) \subseteq Q^R$ for any choice function $\alpha_1$, provided
+$\alpha_1$ does not result in $Ac(i) = \emptyset$.
+Then $sc(2) = 1$ and the symbolset in cell 1 is marked.  Using $\alpha_2$
+and rule~\ref{itm:extend} of $M$ yields $Ac(2) \subseteq P^R$ and
+$\cellp{sc(2)}$ is unmarked.
+Since $Ac(2) \subseteq P^R$, and $sc(3) = 2$, from rule~\ref{itm:turnaround}
+of $M$, each symbol in $\cellp{sc(3)}$ at the end of step 3 is marked.
+Also from~\ref{itm:turnaround}, $Ac(3) \subseteq Q^L$.
+Therefore at the end of the first sweep, the cell containing the
+marked symbolset has shifted one cell to right.
+The location of the sweep marker therefore defines both the number of
+sweeps performed as well as the cell from which the next sweep begins.
+Further, this behavior of the sweep marker holds for any sequence of choice
+functions that does not lead to a null computation.
+We note that the sweep marker is moved only at the last right moving
+step of a sweep.
+If therefore, the choice function sequence defines only part of a sweep,
+the locaiton of the marked symbolset defines the last complete sweep performed.
+
+\begin{aside}
+%        |{q_0}|
+%           |
+%           v
+%  | \c |  a_1  |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z   |   \b  |       |   \b  |  \b  |
+%    A      B       C       D       E       F     G
+%
+    This is a diagram of $M$ in its initial state.
+    We apply rule~\ref{itm:start}, which states that the instructions $\delta$ will
+    map the initial states to some subset $Ac(0) \subseteq Q^L$ of left moving
+    states, and update the contents of cell 1 to $\cellp{(1)}$.
+    \[
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{a_1}{z}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of B,draw=blue,thick] {$\{q_0\}$};
+                \draw[-latex] (F) -- (B);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+        \quad \longrightarrow \quad
+%           |Ac(0)|
+%              |
+%      <---    v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z        |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+%
+    \begin{aligned}
+        \begin{tikzpicture}[every node/.style={block},
+            block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+            \node (A) {\Mcell{\cancelc}{\cancelc}};
+            \node (A0) [below=of A, draw=none] {$0$};
+            \node (B) [right=of A] {\Mcell{\cellp{1}}{z}};
+            \node (B0) [below=of B, draw=none] {$1$};
+            \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+            \node (C0) [below=of C, draw=none] {$2$};
+            \node (D) [right=of C] {$\ldots$};
+            \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+            \node (E0) [below=of E, draw=none] {$n$};
+            \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+            \node (G) [right=of F] {$\ldots$};
+            \node (F) [above = 0.75cm of B,draw=blue,thick] {$\{Ac(0)\}$};
+            \draw[-latex] (F) -- (B);
+            \draw[-latex,red] ($(F.west)!0.5!(B.west)$) -- ++(-7mm,0);
+            \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+            (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+        \end{tikzpicture}
+    \end{aligned}
+    \]
+Next, the machine moves left.
+At this point $M$ scans the contents of cell 0 ($<\cancelc,\cancelc>$), and
+    from~\ref{itm:leftreverse}, the contents of the cell remain unchanged, but the
+    direction reverses.
+    The state of $M$ also updates to $Ac(1) \subseteq Q^R$.
+    \[
+%  |Ac(0)|
+%     |
+%     v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z        |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{z}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of A,draw=blue,thick] {$\{Ac(0)\}$};
+                \draw[-latex] (F) -- (A);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+        \quad \longrightarrow \quad
+%  |Ac(1)|
+%     | --->
+%     v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z        |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{z}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of A,draw=blue,thick] {$\{Ac(1)\}$};
+                \draw[-latex] (F) -- (A);
+                \draw[-latex,red] ($(F.east)!0.5!(A.east)$) -- ++(7mm,0);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+    \]
+The next step involves the machine $M$ scanning cell 1, which contains
+    the marker $z$.
+    By rule~\ref{itm:extend}, the state is updated to a right moving
+    state $P^R$, and the cell is unmarked.
+    Note that the symbol in the cell is unchanged (per rule~\ref{itm:extend}).
+    \[
+%          |Ac(1)|
+%             |
+%             v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   z        |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{z}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of B,draw=blue,thick] {$\{Ac(1)\}$};
+                \draw[-latex] (F) -- (B);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+        \quad \longrightarrow \quad
+%           |Ac(2)|
+%              | --->
+%              v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   \b       |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{\cancelb}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of B,draw=blue,thick] {$\{Ac(2)\}$};
+                \draw[-latex] (F) -- (B);
+                \draw[-latex,red] ($(F.east)!0.5!(B.east)$) -- ++(7mm,0);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+    \]
+    Finally, as $Ac(2) \subseteq P^R$, the machine $M$ marks the cell to the right, and
+    enters a left moving state.
+    \[
+%                     |Ac(2)|
+%                        |
+%                        v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   \b       |   \b  |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{\cancelb}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{\cancelb}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of C,draw=blue,thick] {$\{Ac(2)\}$};
+                \draw[-latex] (F) -- (C);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+        \quad \longrightarrow \quad
+%                     |Ac(3)|
+%                   <--- |
+%                        v
+%  | \c |  \cellp{1} |  a_2  |  ...  |  a_n  |  \b  |  ....
+%  | \c |   \b       |   z   |       |   \b  |  \b  |
+%    A      B            C       D       E       F     G
+        \begin{aligned}
+            \begin{tikzpicture}[every node/.style={block},
+                block/.style={minimum height=3.5em,outer sep=0pt,draw,rectangle,node distance=0pt}]
+                \node (A) {\Mcell{\cancelc}{\cancelc}};
+                \node (A0) [below=of A, draw=none] {$0$};
+                \node (B) [right=of A] {\Mcell{\cellp{1}}{\cancelb}};
+                \node (B0) [below=of B, draw=none] {$1$};
+                \node (C) [right=of B] {\Mcell{a_2}{z}};
+                \node (C0) [below=of C, draw=none] {$2$};
+                \node (D) [right=of C] {$\ldots$};
+                \node (E) [right=of D] {\Mcell{a_n}{\cancelb}};
+                \node (E0) [below=of E, draw=none] {$n$};
+                \node (F) [right=of E] {\Mcell{\cancelb}{\cancelb}};
+                \node (G) [right=of F] {$\ldots$};
+                \node (F) [above = 0.75cm of C,draw=blue,thick] {$\{Ac(3)\}$};
+                \draw[-latex] (F) -- (C);
+                \draw[-latex,red] ($(F.west)!0.5!(C.west)$) -- ++(-7mm,0);
+                \draw (A.north west) -- ++(-1cm,0) (A.south west) -- ++ (-1cm,0)
+                (G.north east) -- ++(1cm,0) (G.south east) -- ++ (1cm,0);
+            \end{tikzpicture}
+        \end{aligned}
+    \]
+\end{aside}
+
+Consider now the $i$th sweep of $M$.
+This consists of $i$ left moves followed by $i+1$ right moves.
+
+The total number of steps of $M$ required for $i$ sweeps is therefore
+\[
+    \sum_{j=1}^{i} (2j+1) = i^2 + 2i,
+\]
+the last step of sweep $i$ being the use of a choice function at cell $(i+1)$.
+
+Consider now the $(i+1)$st sweep.
+This sweep starts with states $Ac(i^2+2i) \subseteq Q^L$ and $sc(i^2+2i+1) = i$.
+Since the $(i+1)$st sweep would move left until cell 0 is scanned and then move
+right to cell $(i+2)$, for $i^2 + 2i < j \leq i^2 + 3i + 1$
+\[
+    sc(j) = (i^2+3i+1) - j
+\]
+and for $i^2+3i+1 < j \leq i^2+4i+3$
+\[
+    sc(j) = j - (i^2+3i+1).
+\]
 
 
+At step $i^2 + 2i + k, 1 \leq k \leq i+1$, the set of active states is $Ac(i^2+2i+k-1)$ and the scanned
+cell is $sc(i^2+2i+k) = i^2 + 3i + 1 - (i^2 + 2i +k) = (i - k + 1)$.
+The cell $sc(i^2+2i+k)$ was last scanned by $M$ during the right moving half of the $i$th sweep.
+At the end of the $i$th sweep, $sc(i^2+2i) = i+1$, and therefore
+\[
+    sc(i^2+2i-k) = i + 1 - k = i - (k - 1).
+\]
+Therefore for $1 \leq k \leq i+1$ at step $i^2 + 2i +k$ the active states $Ac(i^2+2i+k-1)$ scan the
+symbols in cell $i - (k-1)$ which were written in step $i^2+2i-k$.
+We thus have the following:
+\begin{lemma}
+    For $i \geq 1, 1 \leq k \leq i+1$,
+    \[
+        \cell{sc(i^2+2i+k)} = \cellp{sc(i^2+2i-k)}.
+    \]
+\end{lemma}
+
+\begin{error}
+    I don't understand the notation $\cellp{sc(i+1)}$.
+    The cell $sc(i+1)$ is visited many times by the
+    M machine as it makes subsequent passes through the tape.
+    So what does $\cell{sc(i+1)}$ vs $\cellp{sc(i+1)}$ mean?
+    From this Lemma, it appears that the distinction between
+    $\cell{k}$ and $\cellp{k}$ is simply that $\cell{k}$ is the
+    contents of the $k$th cell before the machine updates it, and
+    $\cellp{k}$ is the contents after the machine updates it.
+    The distinction seems a little arbitrary, since "before" and "after"
+    are temporal constructs.
+    And indeed, since the machine will revisit cell $k$, then
+    $\cellp{k}$ will become $\cell{k}$.
+\end{error}
+
+Consider now the right moving half of the $(i+1)$st sweep.
+The machine moves from $\cell{0}$ to $\cell{i+2}$.
+At step $i^2 + 3i + k, 1 < k \leq i+3$, the scanned cell is
+$sc(i^2+3i+k) = k - 1$ since $sc(i^2+3i+1) = 0$.
+For $1 < k < i+3$ the cell $(k-1)$ is last scanned by the left
+hand of the $(i+1)$st sweep.
+Since during this part of the $(i+1)$st sweep,
+$sc(j) = (i^2+3i+1) - j, i^2+2i < j \leq i^2 + 3i + 1$, it follows
+that $sc(i^2+3i+2-k) = k-1$.
+We thus have the following:
+\begin{lemma}
+    For $i\geq 1, 1 \leq k \leq i+1$, $\cell{sc(i^2+3i+1+k)} = \cellp{i^2+3i+1-k}$.
+\end{lemma}
+\begin{error}
+  I believe this should be $\cellp{sc(i^2+3i+1-k})$?
+\end{error}
+
+For $k=i+2, sc(i^2+4i+3) = i+2$.
+This cell is scanned for the first time during sweep $(i+1)$ and thus $\cell{sc(i^2+4i+3)}$ is
+the initial contents of $\cell{i+2}$.
